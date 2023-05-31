@@ -1,42 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>video upload php and mysql</title>
 	<style>
-		body {
+		.container {
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			flex-direction: column;
-			min-height: 100vh;
 		}
-		input {
-			font-size: 2rem;
+
+		.box {
+			height: 400px;
+			width: 300px;
+			border-radius: 5px;
+			border: 1px dotted black;
+			padding: 1.5rem;
+
 		}
-		a {
-			text-decoration: none;
-			color: #006CFF;
-			font-size: 1.5rem;
+
+		.mb-2 {
+			margin-bottom: 2rem;
 		}
 	</style>
 </head>
+
 <body>
-	<a href="videos.php">Videos</a>
-	<?php if (isset($_GET['error'])) {  ?>
-		<p><?=$_GET['error']?></p>
-	<?php } ?>
-	 <form action="upload.php"
-	       method="post"
-	       enctype="multipart/form-data">
 
-	 	<input type="file"
-	 	       name="my_video">
+	<div class="container">
+		<div class="box">
+			<h4>Make Video for HLS</h4>
+			<form action="upload.php" method="post" enctype="multipart/form-data"> <input class="mb-2" type="file"
+					name="my_video">
+				<button type="submit" name="submit" value="Convert">Convert</button>
+			</form>
+			<div class="mb-2"></div>
+			<div class="mb-2"></div>
+			<div class="mb-2"></div>
+			<div class="mb-2"></div>
+			<div class="mb-2"></div>
 
-	 	<input type="submit"
-	 	       name="submit" 
-	 	       value="Upload">
-	 </form>
+
+			<a href="videos.php"> Coverted Videos</a>
+		</div>
+	</div>
+
+
 </body>
+
 </html>
