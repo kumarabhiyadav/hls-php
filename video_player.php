@@ -1,60 +1,51 @@
-<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
-<!-- Or if you want the latest version from the main branch -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@canary"></script> -->
-<video controls crossorigin playsinline >
-  <source
-      type="application/x-mpegURL" 
-      src="video-6477ee3da0da59/master.m3u8">
-</video><script>
-   document.addEventListener("DOMContentLoaded", () => {
-  const video = document.querySelector("video");
-  const source = video.getElementsByTagName("source")[0].src;
-  
-  // For more options see: https://github.com/sampotts/plyr/#options
-  const defaultOptions = {};
+<!DOCTYPE html>
+<html lang="en">
 
-  if (Hls.isSupported()) {
-    // For more Hls.js options, see https://github.com/dailymotion/hls.js
-    const hls = new Hls();
-    hls.loadSource(source);
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Video.js + hls.js</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- https://getbootstrap.com -->
+    <link href="https://vjs.zencdn.net/5.19.2/video-js.css" rel="stylesheet"><!-- https://videojs.com -->
+    <style type="text/css">
+        .video-js {
+            font-size: 1rem;
+        }
+    </style>
+</head>
 
-    // From the m3u8 playlist, hls parses the manifest and returns
-    // all available video qualities. This is important, in this approach,
-    // we will have one source on the Plyr player.
-    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+<body class="bg-light">
+    <div class="container">
+        <div class="my-5 embed-responsive embed-responsive-16by9">
+            <video id="video" class="embed-responsive-item video-js vjs-default-skin" width="640" height="360" autoplay
+                controls></video>
+        </div>
 
-      // Transform available levels into an array of integers (height values).
-      const availableQualities = hls.levels.map((l) => l.height)
-      console.log(availableQualities);
+    </div>
+    <script src="https://vjs.zencdn.net/5.19.2/video.js"></script><!-- https://videojs.com -->
+    <script src="js/hls.min.js?v=v0.9.1"></script><!-- https://github.com/video-dev/hls.js -->
+    <script src="js/videojs5-hlsjs-source-handler.min.js?v=0.3.1"></script>
+    <!-- https://github.com/streamroot/videojs-hlsjs-plugin -->
+    <script src="js/vjs-quality-picker.js?v=v0.0.2"></script>
+    <!-- https://github.com/streamroot/videojs-quality-picker -->
+    <script>
 
-      // Add new qualities to option
-      defaultOptions.quality = {
-        default: availableQualities[0],
-        options: availableQualities,
-        // this ensures Plyr to use Hls to update quality level
-        // Ref: https://github.com/sampotts/plyr/blob/master/src/js/html5.js#L77
-        forced: true,        
-        onChange: (e) => updateQuality(e),
-      }
+        const queryString = window.location.search;
+        console.log(queryString);
+        const urlParams = new URLSearchParams(queryString);
 
-      // Initialize new Plyr player with quality options
-      const player = new Plyr(video, defaultOptions);
-    });
-    hls.attachMedia(video);
-    window.hls = hls;
-  } else {
-    // default options with no quality update in case Hls is not supported
-    const player = new Plyr(video, defaultOptions);
-  }
+        var player = videojs('video');
 
-  function updateQuality(newQuality) {
-    window.hls.levels.forEach((level, levelIndex) => {
-      if (level.height === newQuality) {
-        console.log("Found quality match with " + newQuality);
-        window.hls.currentLevel = levelIndex;
-      }
-    });
-  }
-});
+        player.qualityPickerPlugin();
 
-</script>
+        player.src({
+            src: urlParams.get('id'),
+            type: 'application/x-mpegURL'
+        });
+
+        player.play();
+    </script>
+</body>
+
+</html>

@@ -2,47 +2,47 @@
 <html>
 
 <head>
-    <meta charset=utf-8 />
-    <title>Videos</title>
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
+        div.container {
+            text-align: center;
+        }
 
-    <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.21.1/video.min.js"></script>
-    <script src="https://unpkg.com/browse/@videojs/http-streaming@2.6.0/dist/videojs-http-streaming.min.js"></script>
+        ul.myUL {
+            display: inline-block;
+            text-align: left;
+        }
 
+        .p-1{
+            padding: 1rem;
+        }
+    </style>
 </head>
 
 <body>
-
-
-
-    <?php
-    $json = file_get_contents('videos.json');
-    $json_data = json_decode($json, true);
-    
-    foreach ($json_data as $videoLink) {
-  
-        echo "
-        <div style=\"height:200px; width:400px\">
-        <video id=\"my_video_1\" class=\"video-js vjs-fluid vjs-default-skin\" controls preload=\"auto\" data-setup='{}'>
-            <source src=\"$videoLink\" type=\"application/x-mpegURL\">
-        </video>
-
+    <div class="center">
+        <h3>All Videos</h3>
     </div>
-        ";
 
-    }
+    <div class="container">
+  <ul class="myUL">
 
-    ?>
+        <?php
+        $json = file_get_contents('videos.json');
+        $json_data = json_decode($json, true);
 
-
-  
-    
-    <script>
-        var player = new videojs('my_video_1');
-        player.play();
-    </script>
-
+        foreach ($json_data as $videoLink) {
+            $splittedName = explode('/', $videoLink);
+            echo "  <li class= \"p-1\"> <a href='video_player.php?id=" . $videoLink . "'>$splittedName[0]</a> </li> ";
+        }
+        ?>
+  </ul>
+</div>
 </body>
 
 </html>
