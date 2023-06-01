@@ -13,13 +13,31 @@
 </head>
 
 <body>
-    <div style="height:200px; width:400px">
-        <video id="my_video_1"  class="video-js vjs-fluid vjs-default-skin" controls
-            preload="auto" data-setup='{}'>
-            <source src="video-6477b4ca14cd69/master.m3u8" type="application/x-mpegURL">
+
+
+
+    <?php
+    $json = file_get_contents('videos.json');
+    $json_data = json_decode($json, true);
+    
+    foreach ($json_data as $videoLink) {
+  
+        echo "
+        <div style=\"height:200px; width:400px\">
+        <video id=\"my_video_1\" class=\"video-js vjs-fluid vjs-default-skin\" controls preload=\"auto\" data-setup='{}'>
+            <source src=\"$videoLink\" type=\"application/x-mpegURL\">
         </video>
 
     </div>
+        ";
+
+    }
+
+    ?>
+
+
+  
+    
     <script>
         var player = new videojs('my_video_1');
         player.play();
